@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "total_videos_scanned": 10,
+  "total_samples_extracted": 10,
+  "skipped_videos": 0,
+  "classes": [
+    "book",
+    "drink",
+    "help",
+    "no",
+    "yes"
+  ],
+  "class_counts": {
+    "book": 2,
+    "drink": 2,
+    "help": 2,
+    "no": 2,
+    "yes": 2
+  },
+  "feature_dim": 315,
+  "output_csv": "data\\wlasl\\word_landmarks.csv"
+}

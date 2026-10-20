@@ -446,12 +446,24 @@ MODEL_METADATA_FILE = os.path.join("models", "model_metadata.json")
 COMPARISON_CHART_FILE = os.path.join("results", "model_comparison_chart.png")
 HAND_LANDMARKS_IMG = os.path.join("assets", "hand_landmarks.png")
 
+WORD_DATASET_INFO_FILE = os.path.join("data", "wlasl", "word_dataset_info.json")
+WORD_MODELS_DIR = os.path.join("models", "word_models")
+WORD_METADATA_FILE = os.path.join(WORD_MODELS_DIR, "word_model_metadata.json")
+WORD_COMPARISON_FILE = os.path.join("results", "word_results", "word_model_comparison.json")
+
 
 @st.cache_resource
 def get_predictor():
     """Initializes and caches the sign language predictor."""
     from src.prediction import SignLanguagePredictor
     return SignLanguagePredictor()
+
+
+@st.cache_resource
+def get_word_predictor():
+    """Initializes and caches the word-level sign predictor."""
+    from src.word_recognition import WordSignPredictor
+    return WordSignPredictor()
 
 
 def load_json(filepath: str) -> Optional[dict]:
@@ -473,7 +485,7 @@ st.sidebar.caption("Real-Time Sign Language Recognition")
 
 nav_choice = st.sidebar.radio(
     "Navigation",
-    ["🏠 Home Dashboard", "📷 Live Recognition", "📊 Model Comparison", "📁 Dataset Explorer", "ℹ️ About Project"],
+    ["🏠 Home Dashboard", "📷 Live Recognition", "🔤 Words Recognition", "📊 Model Comparison", "📁 Dataset Explorer", "ℹ️ About Project"],
 )
 
 st.sidebar.markdown("---")
@@ -482,10 +494,12 @@ st.sidebar.subheader("System Status")
 has_downloaded = os.path.exists(DATASET_INFO_FILE)
 has_landmarks = os.path.exists(LANDMARKS_FILE)
 has_models = os.path.exists(MODEL_METADATA_FILE)
+has_word_models = os.path.exists(WORD_METADATA_FILE)
 
-st.sidebar.write(f"Dataset Download: {'✅ Ready' if has_downloaded else '⏳ Pending'}")
-st.sidebar.write(f"Landmarks Extracted: {'✅ Ready' if has_landmarks else '⏳ Pending'}")
-st.sidebar.write(f"Models Trained: {'✅ Ready' if has_models else '⏳ Pending'}")
+st.sidebar.write(f"Alphabet Dataset: {'✅ Ready' if has_downloaded else '⏳ Pending'}")
+st.sidebar.write(f"Alphabet Landmarks: {'✅ Ready' if has_landmarks else '⏳ Pending'}")
+st.sidebar.write(f"Alphabet Models: {'✅ Ready' if has_models else '⏳ Pending'}")
+st.sidebar.write(f"Word Models (WLASL): {'✅ Ready' if has_word_models else '⏳ Pending'}")
 
 st.sidebar.markdown("---")
 st.sidebar.caption("ML Lab Mini-Project • BTech CSE/ECE")
@@ -705,7 +719,352 @@ elif nav_choice == "📷 Live Recognition":
 
 
 # ==============================================================================
-# 3. MODEL COMPARISON
+# 3. WORDS RECOGNITION (FINGERSPELLING & COMPLETE DYNAMIC SIGNS)
+# ==============================================================================
+elif nav_choice == "🔤 Words Recognition":
+    st.subheader("🔤 Words & Sentence Recognition")
+    st.write("Construct words through alphabet fingerspelling or recognize movement-based full signs using WLASL models.")
+
+    rec_mode = st.radio(
+        "Select Word Recognition Method:",
+        ["🔤 Fingerspelling Word Builder", "🎬 Dynamic Sign-to-Word (WLASL)"],
+        horizontal=True,
+    )
+
+    st.markdown("---")
+
+    # --------------------------------------------------------------------------
+    # FEATURE A: FINGERSPELLING WORD BUILDER
+    # --------------------------------------------------------------------------
+    if rec_mode == "🔤 Fingerspelling Word Builder":
+        if not has_models:
+            st.warning("⚠️ Trained alphabet models were not detected in `models/`. Please run `python train_models.py` first.")
+            st.stop()
+
+        from src.fingerspelling import FingerspellingManager
+        if "fs_manager" not in st.session_state:
+            st.session_state["fs_manager"] = FingerspellingManager()
+
+        fs = st.session_state["fs_manager"]
+        predictor = get_predictor()
+
+        col_left, col_right = st.columns([1, 1.3])
+
+        with col_left:
+            st.markdown("### ⚙️ Fingerspelling Controls")
+            fs_model = st.selectbox(
+                "Alphabet Classifier:",
+                ["Random Forest", "SVM", "KNN", "Decision Tree"],
+                key="fs_model_select"
+            )
+
+            fs_input = st.radio(
+                "Input Source:",
+                ["Live Webcam Stream", "Camera Snapshot", "Upload Image File"],
+                key="fs_input_radio"
+            )
+
+            with st.expander("🛠️ Debouncing & Stability Settings", expanded=False):
+                fs.auto_commit = st.checkbox("Auto-commit letters when gesture held", value=fs.auto_commit)
+                fs.min_hold_frames = st.slider("Hold frames threshold", 3, 20, fs.min_hold_frames)
+                fs.min_confidence = st.slider("Minimum confidence", 0.20, 0.95, fs.min_confidence, 0.05)
+
+            st.markdown("### 🔠 Word Actions")
+            btn_c1, btn_c2, btn_c3 = st.columns(3)
+            with btn_c1:
+                if st.button("➕ Confirm", use_container_width=True, help="Commit candidate letter (supports double letters like LL in HELLO)"):
+                    fs.confirm_letter()
+                    st.rerun()
+            with btn_c2:
+                if st.button("↩️ Undo", use_container_width=True, help="Remove last letter"):
+                    fs.undo_letter()
+                    st.rerun()
+            with btn_c3:
+                if st.button("␣ Space", use_container_width=True, help="Finish current word and start next"):
+                    fs.add_space()
+                    st.rerun()
+
+            btn_c4, btn_c5 = st.columns(2)
+            with btn_c4:
+                if st.button("🗑️ Clear Word", use_container_width=True):
+                    fs.clear_current_word()
+                    st.rerun()
+            with btn_c5:
+                if st.button("🔄 Clear All", use_container_width=True):
+                    fs.clear_all()
+                    st.rerun()
+
+        with col_right:
+            # Word display cards
+            curr_w = fs.current_word if fs.current_word else "—"
+            full_t = fs.get_transcript() if fs.get_transcript() else "—"
+
+            st.markdown(f"""
+            <div style="background-color: #12141a; border: 1px solid #282b34; border-radius: 6px; padding: 14px 20px; margin-bottom: 12px;">
+                <div style="font-size: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Newsreader', serif;">Current Word</div>
+                <div style="font-size: 34px; font-weight: 700; color: #ef4444; letter-spacing: 0.12em; font-family: 'Newsreader', serif; min-height: 44px; display: flex; align-items: center;">
+                    {curr_w}
+                </div>
+            </div>
+            <div style="background-color: #12141a; border: 1px solid #282b34; border-radius: 6px; padding: 12px 18px; margin-bottom: 16px;">
+                <div style="font-size: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Newsreader', serif;">Full Transcript</div>
+                <div style="font-size: 18px; color: #f3f4f6; font-family: 'Newsreader', serif; min-height: 24px;">
+                    {full_t}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            if fs_input == "Live Webcam Stream":
+                run_fs_live = st.toggle("Start Fingerspelling Camera", value=False, key="fs_cam_toggle")
+                fs_frame_win = st.empty()
+                fs_status_ph = st.empty()
+
+                if run_fs_live:
+                    cap = cv2.VideoCapture(0)
+                    if not cap.isOpened():
+                        st.error("❌ Could not access webcam. Please check camera permissions or use Camera Snapshot.")
+                    else:
+                        while run_fs_live:
+                            ret, frame = cap.read()
+                            if not ret:
+                                break
+                            frame = cv2.flip(frame, 1)
+                            pred = predictor.predict_frame(frame, model_name=fs_model)
+                            annotated_rgb = cv2.cvtColor(pred["annotated_frame"], cv2.COLOR_BGR2RGB)
+                            fs_frame_win.image(annotated_rgb, channels="RGB", use_container_width=True)
+
+                            if pred["hand_detected"]:
+                                status = fs.process_frame_prediction(pred["predicted_letter"], pred["confidence"])
+                                conf_pct = f"{pred['confidence']*100:.1f}%" if pred["confidence"] else "N/A"
+                                lock_txt = "🟢 Ready" if status["gesture_released"] else "🔒 Release gesture for same letter"
+                                fs_status_ph.markdown(f"""
+                                <div class="prediction-badge" style="padding: 10px 14px; margin-top: 8px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div><strong>Detected:</strong> <span style="color: #ef4444; font-size: 20px; font-weight: bold;">{pred['predicted_letter']}</span> ({conf_pct})</div>
+                                        <div style="font-size: 13px; color: #9ca3af;">{lock_txt}</div>
+                                    </div>
+                                    <div style="margin-top: 6px; font-size: 12px; color: #9ca3af;">Hold progress: {int(status['hold_progress']*100)}%</div>
+                                </div>
+                                """, unsafe_allow_html=True)
+                            else:
+                                fs.process_frame_prediction(None)
+                                fs_status_ph.markdown("""
+                                <div class="prediction-badge" style="border-color: #282b34; background-color: #181a20; padding: 10px 14px; margin-top: 8px;">
+                                    <div style="color: #6b7280; font-size: 13px;">✋ Show an ASL hand gesture to spell</div>
+                                </div>
+                                """, unsafe_allow_html=True)
+
+                        cap.release()
+
+            elif fs_input == "Camera Snapshot":
+                snap = st.camera_input("Capture an alphabet gesture for fingerspelling", key="fs_snap")
+                if snap is not None:
+                    bytes_data = snap.getvalue()
+                    cv_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+                    pred = predictor.predict_frame(cv_img, model_name=fs_model)
+                    st.image(cv2.cvtColor(pred["annotated_frame"], cv2.COLOR_BGR2RGB), use_container_width=True)
+
+                    if pred["hand_detected"]:
+                        letter = pred["predicted_letter"]
+                        conf_str = f" ({pred['confidence']*100:.1f}%)" if pred["confidence"] else ""
+                        st.success(f"Detected Letter: **{letter}**{conf_str}")
+                        if st.button(f"Add '{letter}' to Word"):
+                            fs.confirm_letter(letter)
+                            st.rerun()
+                    else:
+                        st.warning("No hand landmarks detected. Ensure hand is visible.")
+
+            elif fs_input == "Upload Image File":
+                up_file = st.file_uploader("Upload hand gesture image", type=["jpg", "jpeg", "png"], key="fs_upload")
+                if up_file is not None:
+                    cv_img = cv2.imdecode(np.asarray(bytearray(up_file.read()), dtype=np.uint8), cv2.IMREAD_COLOR)
+                    pred = predictor.predict_frame(cv_img, model_name=fs_model)
+                    st.image(cv2.cvtColor(pred["annotated_frame"], cv2.COLOR_BGR2RGB), use_container_width=True)
+
+                    if pred["hand_detected"]:
+                        letter = pred["predicted_letter"]
+                        conf_str = f" ({pred['confidence']*100:.1f}%)" if pred["confidence"] else ""
+                        st.success(f"Detected Letter: **{letter}**{conf_str}")
+                        if st.button(f"Add '{letter}' to Word", key="btn_add_uploaded"):
+                            fs.confirm_letter(letter)
+                            st.rerun()
+                    else:
+                        st.warning("No hand landmarks detected in uploaded image.")
+
+    # --------------------------------------------------------------------------
+    # FEATURE B: COMPLETE SIGN-TO-WORD (WLASL)
+    # --------------------------------------------------------------------------
+    elif rec_mode == "🎬 Dynamic Sign-to-Word (WLASL)":
+        word_predictor = get_word_predictor()
+        has_word_models_trained = word_predictor.is_available()
+
+        if not has_word_models_trained:
+            st.warning("⚠️ **Trained Word Models Not Found**")
+            st.info("""
+            Word-level recognition classifies complete dynamic gestures using the **WLASL (World-Level American Sign Language)** dataset.
+            
+            **To download the dataset and train classical ML classifiers (KNN, SVM, Decision Tree, Random Forest):**
+            ```bash
+            # 1. Download official WLASL video subset
+            python download_word_dataset.py --glosses book drink help no yes --max_per_gloss 2
+
+            # 2. Extract 315-D temporal MediaPipe landmark features
+            python extract_word_landmarks.py
+
+            # 3. Train all 4 classical ML pipelines
+            python train_word_models.py
+            ```
+            """)
+            st.stop()
+
+        supported_words = word_predictor.get_supported_classes()
+        st.markdown(f"**Recognized Vocabulary ({len(supported_words)} signs):** " + " ".join([f"`{w}`" for w in supported_words]))
+
+        w_col_ctrl, w_col_view = st.columns([1, 1.5])
+
+        with w_col_ctrl:
+            st.markdown("### ⚙️ Sign Classifier")
+            selected_word_model = st.selectbox(
+                "Select Classifier:",
+                ["Decision Tree", "Random Forest", "SVM", "KNN"],
+                key="word_model_select"
+            )
+
+            word_input_mode = st.radio(
+                "Capture Mode:",
+                ["Live Camera Sign (2-Sec Gesture)", "Upload Sign Video Clip", "Word Models Benchmark"],
+                key="word_input_mode_radio"
+            )
+
+        with w_col_view:
+            if word_input_mode == "Live Camera Sign (2-Sec Gesture)":
+                st.markdown("### 📹 Record Dynamic Gesture")
+                st.caption("Click the button below to capture 40 frames (~1.5-2 seconds) of hand motion and recognize the complete sign.")
+
+                if st.button("🔴 Record and Predict Sign", key="btn_record_sign"):
+                    cap = cv2.VideoCapture(0)
+                    if not cap.isOpened():
+                        st.error("❌ Could not access webcam.")
+                    else:
+                        frame_ph = st.empty()
+                        prog_bar = st.progress(0.0)
+                        captured_landmarks = []
+
+                        total_record_frames = 40
+                        for i in range(total_record_frames):
+                            ret, frame = cap.read()
+                            if not ret:
+                                break
+                            frame = cv2.flip(frame, 1)
+                            # Extract landmarks
+                            res = word_predictor.extractor.extract_landmarks(frame)
+                            if res is not None:
+                                feats_63, raw_pts = res
+                                captured_landmarks.append(feats_63)
+                                annotated = word_predictor.extractor.draw_landmarks_on_image(frame, raw_pts)
+                            else:
+                                annotated = frame
+
+                            frame_ph.image(cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB), use_container_width=True)
+                            prog_bar.progress((i + 1) / total_record_frames)
+                            import time
+                            time.sleep(0.03)
+
+                        cap.release()
+
+                        # Run sequence prediction
+                        st.markdown("---")
+                        st.markdown("### 🔍 Prediction Result")
+                        pred_output = word_predictor.predict_sequence(
+                            captured_landmarks,
+                            model_name=selected_word_model,
+                            min_frames=5,
+                            confidence_threshold=0.35,
+                        )
+
+                        if pred_output["predicted_word"]:
+                            if pred_output["uncertain"]:
+                                st.warning(f"⚠️ **{pred_output['status']}**")
+                            else:
+                                conf_str = f" ({pred_output['confidence']*100:.1f}%)" if pred_output["confidence"] else ""
+                                st.markdown(f"""
+                                <div class="prediction-badge" style="padding: 16px 20px;">
+                                    <div class="metric-label">Predicted Complete Sign</div>
+                                    <div class="predicted-letter" style="font-size: 32px;">{pred_output['predicted_word'].upper()}</div>
+                                    <div class="status-text">{pred_output['status']}</div>
+                                </div>
+                                """, unsafe_allow_html=True)
+
+                            if pred_output.get("top_candidates"):
+                                st.markdown("#### Candidate Probabilities:")
+                                for cand in pred_output["top_candidates"]:
+                                    st.write(f"- **{cand['word']}**: {cand['confidence']*100:.1f}%")
+                        else:
+                            st.warning(f"⚠️ {pred_output['status']}")
+
+            elif word_input_mode == "Upload Sign Video Clip":
+                up_vid = st.file_uploader("Upload sign video (.mp4, .mov)", type=["mp4", "mov"], key="vid_upload")
+                if up_vid is not None:
+                    import tempfile
+                    tfile = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
+                    tfile.write(up_vid.read())
+                    tfile.close()
+
+                    from extract_word_landmarks import extract_video_landmarks
+                    st.video(tfile.name)
+
+                    with st.spinner("Extracting temporal MediaPipe landmarks..."):
+                        seq = extract_video_landmarks(tfile.name, word_predictor.extractor)
+                        try:
+                            os.unlink(tfile.name)
+                        except OSError:
+                            pass
+
+                    pred_output = word_predictor.predict_sequence(
+                        seq,
+                        model_name=selected_word_model,
+                        min_frames=3,
+                        confidence_threshold=0.35,
+                    )
+
+                    st.markdown("---")
+                    st.markdown("### 🔍 Video Prediction Result")
+                    if pred_output["predicted_word"]:
+                        if pred_output["uncertain"]:
+                            st.warning(f"⚠️ {pred_output['status']}")
+                        else:
+                            st.markdown(f"""
+                            <div class="prediction-badge" style="padding: 16px 20px;">
+                                <div class="metric-label">Predicted Complete Sign</div>
+                                <div class="predicted-letter" style="font-size: 32px;">{pred_output['predicted_word'].upper()}</div>
+                                <div class="status-text">{pred_output['status']} (analyzed {pred_output['frames_analyzed']} frames)</div>
+                            </div>
+                            """, unsafe_allow_html=True)
+                    else:
+                        st.warning(f"⚠️ {pred_output['status']}")
+
+            elif word_input_mode == "Word Models Benchmark":
+                st.markdown("### 📊 Word-Level Models Benchmark")
+                w_comp = load_json(WORD_COMPARISON_FILE)
+                if w_comp and "models" in w_comp:
+                    w_rows = []
+                    for mname, mdata in w_comp["models"].items():
+                        w_rows.append({
+                            "Model Name": mname,
+                            "Accuracy": f"{mdata['accuracy']*100:.1f}%",
+                            "Macro F1": f"{mdata['macro_f1']*100:.1f}%",
+                            "Macro Precision": f"{mdata['macro_precision']*100:.1f}%",
+                            "Macro Recall": f"{mdata['macro_recall']*100:.1f}%",
+                            "Test Samples": mdata["test_samples"],
+                        })
+                    st.dataframe(pd.DataFrame(w_rows), use_container_width=True, hide_index=True)
+                    st.info(f"🏆 Top Word Model: **{w_comp.get('best_model', 'N/A')}** ({w_comp.get('best_accuracy', 0)*100:.1f}% accuracy)")
+                else:
+                    st.info("No comparison results found in results/word_results/word_model_comparison.json.")
+
+
+# ==============================================================================
+# 4. MODEL COMPARISON
 # ==============================================================================
 elif nav_choice == "📊 Model Comparison":
     st.subheader("📊 Machine Learning Model Comparison")

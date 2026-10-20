@@ -1,0 +1,19 @@
+{
+  "classes": [
+    "book",
+    "drink",
+    "help",
+    "no",
+    "yes"
+  ],
+  "num_classes": 5,
+  "feature_dim": 315,
+  "best_model": "Decision Tree",
+  "best_accuracy": 0.4,
+  "models": {
+    "KNN": "knn_word_model.joblib",
+    "SVM": "svm_word_model.joblib",
+    "Decision Tree": "decision_tree_word_model.joblib",
+    "Random Forest": "random_forest_word_model.joblib"
+  }
+}

@@ -17,6 +17,8 @@ ENV/
 
 # Local user cache
 data/dataset_info.json
+data/wlasl/videos/
+data/wlasl/WLASL_v0.3.json
 *.log
 
 # IDE & OS files

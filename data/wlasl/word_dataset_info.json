@@ -1,0 +1,102 @@
+{
+  "status": "success",
+  "dataset": "WLASL",
+  "target_glosses": [
+    "book",
+    "drink",
+    "help",
+    "no",
+    "yes"
+  ],
+  "total_downloaded_videos": 10,
+  "class_counts": {
+    "book": 2,
+    "drink": 2,
+    "help": 2,
+    "no": 2,
+    "yes": 2
+  },
+  "videos_dir": "data\\wlasl\\videos",
+  "records": [
+    {
+      "gloss": "book",
+      "video_id": "69241",
+      "filename": "book_69241.mp4",
+      "filepath": "data\\wlasl\\videos\\book_69241.mp4",
+      "url": "http://aslbricks.org/New/ASL-Videos/book.mp4",
+      "split": "train"
+    },
+    {
+      "gloss": "book",
+      "video_id": "07069",
+      "filename": "book_07069.mp4",
+      "filepath": "data\\wlasl\\videos\\book_07069.mp4",
+      "url": "https://signstock.blob.core.windows.net/signschool/videos/SignSchool%20Book.mp4",
+      "split": "train"
+    },
+    {
+      "gloss": "drink",
+      "video_id": "69302",
+      "filename": "drink_69302.mp4",
+      "filepath": "data\\wlasl\\videos\\drink_69302.mp4",
+      "url": "http://aslbricks.org/New/ASL-Videos/drink.mp4",
+      "split": "val"
+    },
+    {
+      "gloss": "drink",
+      "video_id": "17710",
+      "filename": "drink_17710.mp4",
+      "filepath": "data\\wlasl\\videos\\drink_17710.mp4",
+      "url": "https://s3-us-west-1.amazonaws.com/files.startasl.com/asldictionary/drink.mp4",
+      "split": "train"
+    },
+    {
+      "gloss": "help",
+      "video_id": "69364",
+      "filename": "help_69364.mp4",
+      "filepath": "data\\wlasl\\videos\\help_69364.mp4",
+      "url": "http://aslbricks.org/New/ASL-Videos/help.mp4",
+      "split": "val"
+    },
+    {
+      "gloss": "help",
+      "video_id": "27206",
+      "filename": "help_27206.mp4",
+      "filepath": "data\\wlasl\\videos\\help_27206.mp4",
+      "url": "https://s3-us-west-1.amazonaws.com/files.startasl.com/asldictionary/help.mp4",
+      "split": "train"
+    },
+    {
+      "gloss": "no",
+      "video_id": "69411",
+      "filename": "no_69411.mp4",
+      "filepath": "data\\wlasl\\videos\\no_69411.mp4",
+      "url": "http://aslbricks.org/New/ASL-Videos/no.mp4",
+      "split": "val"
+    },
+    {
+      "gloss": "no",
+      "video_id": "38525",
+      "filename": "no_38525.mp4",
+      "filepath": "data\\wlasl\\videos\\no_38525.mp4",
+      "url": "https://s3-us-west-1.amazonaws.com/files.startasl.com/asldictionary/no.mp4",
+      "split": "test"
+    },
+    {
+      "gloss": "yes",
+      "video_id": "69546",
+      "filename": "yes_69546.mp4",
+      "filepath": "data\\wlasl\\videos\\yes_69546.mp4",
+      "url": "http://aslbricks.org/New/ASL-Videos/yes.mp4",
+      "split": "val"
+    },
+    {
+      "gloss": "yes",
+      "video_id": "64287",
+      "filename": "yes_64287.mp4",
+      "filepath": "data\\wlasl\\videos\\yes_64287.mp4",
+      "url": "https://media.asldeafined.com/vocabulary/1468774983.6377.mp4",
+      "split": "val"
+    }
+  ]
+}
