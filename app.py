@@ -58,10 +58,23 @@ if os.path.exists(BACKGROUND_SVG_PATH):
 
 # Custom Styling for polished student-friendly light dashboard with subtle blue accents
 st.markdown("<style>\n" + _bg_css + """
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    /* Global Natural Typography */
+    html, body, [class*="css"], .stMarkdown, .stText, p, span, label, div {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        letter-spacing: -0.02em;
+        font-weight: 700;
+    }
+
     /* Main container and font styling */
     .main {
         background-color: transparent !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
     /* Header card */
@@ -165,7 +178,9 @@ def load_json(filepath: str) -> Optional[dict]:
 
 
 # Sidebar Navigation
-st.sidebar.image("https://img.icons8.com/clouds/200/sign-language.png", width=120)
+LOGO_FILE = os.path.join("assets", "logo.svg")
+if os.path.exists(LOGO_FILE):
+    st.sidebar.image(LOGO_FILE, width=105)
 st.sidebar.title("ASL ML Project")
 st.sidebar.caption("Real-Time Sign Language Recognition")
 
