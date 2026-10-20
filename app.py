@@ -10,6 +10,7 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 import streamlit as st
+import base64
 import cv2
 from PIL import Image
 
@@ -21,12 +22,45 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Load local subtle AI-themed background asset
+BACKGROUND_SVG_PATH = os.path.join("assets", "background.svg")
+_bg_css = ""
+if os.path.exists(BACKGROUND_SVG_PATH):
+    with open(BACKGROUND_SVG_PATH, "rb") as _f:
+        _bg_b64 = base64.b64encode(_f.read()).decode("utf-8")
+    _bg_css = f"""
+    /* Full-page fixed AI-themed background */
+    [data-testid="stAppViewContainer"] {{
+        background-image: url("data:image/svg+xml;base64,{_bg_b64}");
+        background-size: cover;
+        background-position: top center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
+    
+    /* Transparent top header bar */
+    [data-testid="stHeader"] {{
+        background-color: transparent !important;
+    }}
+    
+    /* Clean sidebar with subtle translucent wash matching design */
+    [data-testid="stSidebar"] {{
+        background-color: rgba(240, 246, 253, 0.72) !important;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-right: 1px solid rgba(226, 232, 240, 0.7);
+    }}
+    
+    [data-testid="stSidebar"] > div:first-child {{
+        background-color: transparent !important;
+    }}
+    """
+
 # Custom Styling for polished student-friendly light dashboard with subtle blue accents
-st.markdown("""
-<style>
+st.markdown("<style>\n" + _bg_css + """
     /* Main container and font styling */
     .main {
-        background-color: #f8fafc;
+        background-color: transparent !important;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
