@@ -147,8 +147,3 @@ streamlit run app.py
 ```
 *Opens the web dashboard in your default browser at `http://localhost:8501`.*
 
-
-**Answer:** Macro-averaging computes metrics independently for each class and averages them equally, treating rare and frequent alphabet classes with equal weight. This ensures the model does not achieve artificially high scores by performing well only on dominant classes.
-
-### Q4: Which model performed best and why?
-**Answer:** Support Vector Machines (SVM with RBF kernel) and Random Forests typically perform best on normalized landmark geometry. SVM creates maximum-margin separating hyperplanes in 63-dimensional continuous space, while Random Forest handles non-linear boundaries through decorrelated decision trees.
