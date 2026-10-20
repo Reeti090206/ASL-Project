@@ -22,130 +22,161 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Load local subtle AI-themed background asset
-BACKGROUND_SVG_PATH = os.path.join("assets", "background.svg")
-_bg_css = ""
-if os.path.exists(BACKGROUND_SVG_PATH):
-    with open(BACKGROUND_SVG_PATH, "rb") as _f:
-        _bg_b64 = base64.b64encode(_f.read()).decode("utf-8")
-    _bg_css = f"""
-    /* Full-page fixed AI-themed background */
-    [data-testid="stAppViewContainer"] {{
-        background-image: url("data:image/svg+xml;base64,{_bg_b64}");
-        background-size: cover;
-        background-position: top center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }}
-    
-    /* Transparent top header bar */
-    [data-testid="stHeader"] {{
-        background-color: transparent !important;
-    }}
-    
-    /* Clean sidebar with subtle translucent wash matching design */
-    [data-testid="stSidebar"] {{
-        background-color: rgba(240, 246, 253, 0.72) !important;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-right: 1px solid rgba(226, 232, 240, 0.7);
-    }}
-    
-    [data-testid="stSidebar"] > div:first-child {{
-        background-color: transparent !important;
-    }}
-    """
+# Custom Styling: Human-crafted, purposeful developer dashboard aesthetic
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-# Custom Styling for polished student-friendly light dashboard with subtle blue accents
-st.markdown("<style>\n" + _bg_css + """
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-    /* Global Natural Typography */
+    /* Global Typography */
     html, body, [class*="css"], .stMarkdown, .stText, p, span, label, div {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
         -webkit-font-smoothing: antialiased;
+        color: #1e293b;
     }
 
+    /* Natural Headings Hierarchy */
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
         letter-spacing: -0.02em;
-        font-weight: 700;
+        font-weight: 650;
+        color: #0f172a;
     }
 
-    /* Main container and font styling */
+    /* Technical Canvas Background: Subtle engineering dot-grid */
+    [data-testid="stAppViewContainer"] {
+        background-color: #f8fafc;
+        background-image: radial-gradient(#e2e8f0 1.2px, transparent 1.2px);
+        background-size: 24px 24px;
+        background-position: 0 0;
+    }
+
+    /* Main Container */
     .main {
         background-color: transparent !important;
     }
-    
-    /* Header card */
+
+    /* Transparent top header bar */
+    [data-testid="stHeader"] {
+        background-color: transparent !important;
+    }
+
+    /* Clean Developer Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #ffffff !important;
+        border-right: 1px solid #e2e8f0;
+    }
+
+    [data-testid="stSidebar"] > div:first-child {
+        background-color: #ffffff !important;
+    }
+
+    /* Clean Page Header */
     .header-card {
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        color: white;
-        padding: 24px;
-        border-radius: 12px;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 22px 26px;
+        margin-bottom: 22px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
     }
-    
+
     .header-card h1 {
-        color: white !important;
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin-bottom: 8px;
+        color: #0f172a !important;
+        font-size: 1.625rem;
+        font-weight: 650;
+        letter-spacing: -0.025em;
+        margin-bottom: 4px;
     }
-    
+
     .header-card p {
-        color: #e0e7ff;
-        font-size: 1.05rem;
+        color: #64748b;
+        font-size: 0.925rem;
+        font-weight: 400;
         margin-bottom: 0px;
     }
-    
-    /* Stat cards */
+
+    /* Minimalist Stat Blocks */
     .metric-card {
-        background-color: white;
+        background-color: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 16px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        text-align: center;
-        border-top: 4px solid #3b82f6;
+        border-radius: 8px;
+        padding: 16px 20px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+        text-align: left;
     }
-    
+
     .metric-value {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #1e293b;
+        font-size: 1.5rem;
+        font-weight: 650;
+        color: #0f172a;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.2;
     }
-    
+
     .metric-label {
-        font-size: 0.9rem;
+        font-size: 0.8125rem;
         color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        font-weight: 500;
+        text-transform: none;
+        letter-spacing: normal;
+        margin-top: 4px;
     }
-    
-    /* Prediction display badge */
+
+    /* Clean Prediction Status Panel */
     .prediction-badge {
-        background-color: #eff6ff;
-        border: 2px solid #3b82f6;
-        border-radius: 12px;
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
         padding: 20px;
         text-align: center;
-        margin-top: 10px;
-        margin-bottom: 15px;
+        margin-top: 12px;
+        margin-bottom: 16px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
     }
-    
+
     .predicted-letter {
-        font-size: 4rem;
-        font-weight: 800;
-        color: #1d4ed8;
-        line-height: 1;
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: #2563eb;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
     }
-    
+
     .status-text {
-        font-size: 1.1rem;
-        font-weight: 600;
+        font-size: 0.925rem;
+        font-weight: 500;
         color: #475569;
+        margin-top: 6px;
+    }
+
+    /* Subtle Dividers */
+    hr {
+        border-color: #e2e8f0 !important;
+        margin: 20px 0 !important;
+    }
+
+    /* Native-feeling Buttons */
+    .stButton > button {
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+        font-size: 0.875rem !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #334155 !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+        transition: all 0.15s ease !important;
+    }
+
+    .stButton > button:hover {
+        border-color: #94a3b8 !important;
+        color: #0f172a !important;
+        background-color: #f8fafc !important;
+    }
+
+    /* Code & Monospace Elements */
+    code, pre {
+        font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
+        border-radius: 6px !important;
     }
 </style>
 """, unsafe_allow_html=True)
