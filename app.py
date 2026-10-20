@@ -444,6 +444,7 @@ EXTRACTION_SUMMARY_FILE = os.path.join("results", "extraction_summary.json")
 MODEL_COMPARISON_FILE = os.path.join("results", "model_comparison.json")
 MODEL_METADATA_FILE = os.path.join("models", "model_metadata.json")
 COMPARISON_CHART_FILE = os.path.join("results", "model_comparison_chart.png")
+HAND_LANDMARKS_IMG = os.path.join("assets", "hand_landmarks.png")
 
 
 @st.cache_resource
@@ -589,23 +590,10 @@ if nav_choice == "🏠 Home Dashboard":
     """)
 
     st.markdown("---")
-    st.subheader("🚀 Quick Start / Reproduction Commands")
-    st.code("""
-# 1. Install dependencies
-pip install -r requirements.txt
-
-# 2. Download Kaggle dataset via KaggleHub
-python download_dataset.py
-
-# 3. Extract MediaPipe hand landmarks
-python extract_landmarks.py
-
-# 4. Train and tune all 4 ML models
-python train_models.py
-
-# 5. Launch interactive web dashboard
-streamlit run app.py
-    """, language="bash")
+    st.subheader("🖐️ Hand Landmark Topology (21 Keypoints)")
+    st.markdown("MediaPipe extracts **21 precise 3D spatial keypoints** (63 values: $x, y, z$) representing joint coordinates normalized relative to the wrist origin.")
+    if os.path.exists(HAND_LANDMARKS_IMG):
+        st.image(HAND_LANDMARKS_IMG, use_container_width=True)
 
 
 # ==============================================================================
