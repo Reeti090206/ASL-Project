@@ -1,0 +1,27 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Environments
+.env
+.venv/
+venv/
+env/
+ENV/
+
+# Large binary MediaPipe task models (auto-downloaded on first run)
+*.task
+
+# Local user cache
+data/dataset_info.json
+*.log
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

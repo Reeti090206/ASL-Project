@@ -1,0 +1,215 @@
+{
+  "dataset_path": "C:\\Users\\reeti\\.cache\\kagglehub\\datasets\\debashishsau\\aslamerican-sign-language-aplhabet-dataset\\versions\\1",
+  "total_images_processed": 4350,
+  "total_hands_detected": 4008,
+  "total_hands_rejected": 342,
+  "overall_detection_rate": 0.9214,
+  "total_classes": 29,
+  "classes": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "del",
+    "nothing",
+    "space"
+  ],
+  "class_stats": {
+    "A": {
+      "processed": 150,
+      "detected": 149,
+      "rejected": 1,
+      "detection_rate": 0.9933
+    },
+    "B": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "C": {
+      "processed": 150,
+      "detected": 138,
+      "rejected": 12,
+      "detection_rate": 0.92
+    },
+    "D": {
+      "processed": 150,
+      "detected": 148,
+      "rejected": 2,
+      "detection_rate": 0.9867
+    },
+    "del": {
+      "processed": 150,
+      "detected": 79,
+      "rejected": 71,
+      "detection_rate": 0.5267
+    },
+    "E": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "F": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "G": {
+      "processed": 150,
+      "detected": 148,
+      "rejected": 2,
+      "detection_rate": 0.9867
+    },
+    "H": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "I": {
+      "processed": 150,
+      "detected": 146,
+      "rejected": 4,
+      "detection_rate": 0.9733
+    },
+    "J": {
+      "processed": 150,
+      "detected": 135,
+      "rejected": 15,
+      "detection_rate": 0.9
+    },
+    "K": {
+      "processed": 150,
+      "detected": 149,
+      "rejected": 1,
+      "detection_rate": 0.9933
+    },
+    "L": {
+      "processed": 150,
+      "detected": 149,
+      "rejected": 1,
+      "detection_rate": 0.9933
+    },
+    "M": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "N": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "nothing": {
+      "processed": 150,
+      "detected": 0,
+      "rejected": 150,
+      "detection_rate": 0.0
+    },
+    "O": {
+      "processed": 150,
+      "detected": 145,
+      "rejected": 5,
+      "detection_rate": 0.9667
+    },
+    "P": {
+      "processed": 150,
+      "detected": 126,
+      "rejected": 24,
+      "detection_rate": 0.84
+    },
+    "Q": {
+      "processed": 150,
+      "detected": 143,
+      "rejected": 7,
+      "detection_rate": 0.9533
+    },
+    "R": {
+      "processed": 150,
+      "detected": 149,
+      "rejected": 1,
+      "detection_rate": 0.9933
+    },
+    "S": {
+      "processed": 150,
+      "detected": 147,
+      "rejected": 3,
+      "detection_rate": 0.98
+    },
+    "space": {
+      "processed": 150,
+      "detected": 116,
+      "rejected": 34,
+      "detection_rate": 0.7733
+    },
+    "T": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "U": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "V": {
+      "processed": 150,
+      "detected": 149,
+      "rejected": 1,
+      "detection_rate": 0.9933
+    },
+    "W": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "X": {
+      "processed": 150,
+      "detected": 150,
+      "rejected": 0,
+      "detection_rate": 1.0
+    },
+    "Y": {
+      "processed": 150,
+      "detected": 146,
+      "rejected": 4,
+      "detection_rate": 0.9733
+    },
+    "Z": {
+      "processed": 150,
+      "detected": 146,
+      "rejected": 4,
+      "detection_rate": 0.9733
+    }
+  }
+}
