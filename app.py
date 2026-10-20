@@ -22,32 +22,29 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom Styling: Human-crafted, purposeful developer dashboard aesthetic
+# Custom Styling: Restrained Computer Vision Research Lab Aesthetic
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-    /* Global Typography */
+    /* Global Typography: Warm Charcoal */
     html, body, [class*="css"], .stMarkdown, .stText, p, label {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
         -webkit-font-smoothing: antialiased;
-        color: #1e293b;
+        color: #292524;
     }
 
-    /* Natural Headings Hierarchy */
+    /* Restrained Headings Hierarchy */
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
         letter-spacing: -0.02em;
         font-weight: 650;
-        color: #0f172a;
+        color: #1c1917;
     }
 
-    /* Technical Canvas Background: Subtle engineering dot-grid */
+    /* Warm Off-White Research Canvas */
     [data-testid="stAppViewContainer"] {
-        background-color: #f8fafc;
-        background-image: radial-gradient(#e2e8f0 1.2px, transparent 1.2px);
-        background-size: 24px 24px;
-        background-position: 0 0;
+        background-color: #faf8f5 !important;
     }
 
     /* Main Container */
@@ -55,67 +52,68 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* Transparent top header bar */
+    /* Top Header Bar */
     [data-testid="stHeader"] {
         background-color: transparent !important;
     }
 
-    /* Clean Developer Sidebar */
+    /* Grounded Research Sidebar */
     [data-testid="stSidebar"] {
-        background-color: #ffffff !important;
-        border-right: 1px solid #e2e8f0;
+        background-color: #f5f3ef !important;
+        border-right: 1px solid #e7e5e4;
     }
 
     [data-testid="stSidebar"] > div:first-child {
-        background-color: #ffffff !important;
+        background-color: #f5f3ef !important;
     }
 
-    /* Clean Page Header */
+    /* Clean Research Lab Header */
     .header-card {
         background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 22px 26px;
+        border: 1px solid #e7e5e4;
+        border-left: 3px solid #c2410c;
+        border-radius: 6px;
+        padding: 20px 24px;
         margin-bottom: 22px;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
     }
 
     .header-card h1 {
-        color: #0f172a !important;
-        font-size: 1.625rem;
+        color: #1c1917 !important;
+        font-size: 1.5rem;
         font-weight: 650;
         letter-spacing: -0.025em;
         margin-bottom: 4px;
     }
 
     .header-card p {
-        color: #64748b;
-        font-size: 0.925rem;
+        color: #78716c;
+        font-size: 0.9rem;
         font-weight: 400;
         margin-bottom: 0px;
     }
 
-    /* Minimalist Stat Blocks */
+    /* Simple Metric Layout */
     .metric-card {
         background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 16px 20px;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+        border: 1px solid #e7e5e4;
+        border-radius: 6px;
+        padding: 14px 18px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
         text-align: left;
     }
 
     .metric-value {
-        font-size: 1.5rem;
+        font-size: 1.45rem;
         font-weight: 650;
-        color: #0f172a;
+        color: #1c1917;
         font-variant-numeric: tabular-nums;
         line-height: 1.2;
     }
 
     .metric-label {
         font-size: 0.8125rem;
-        color: #64748b;
+        color: #78716c;
         font-weight: 500;
         text-transform: none;
         letter-spacing: normal;
@@ -125,64 +123,64 @@ st.markdown("""
     /* Clean Prediction Status Panel */
     .prediction-badge {
         background-color: #ffffff;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
+        border: 1px solid #e7e5e4;
+        border-radius: 6px;
         padding: 20px;
         text-align: center;
         margin-top: 12px;
         margin-bottom: 16px;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
     }
 
     .predicted-letter {
-        font-size: 3.5rem;
+        font-size: 3.25rem;
         font-weight: 700;
-        color: #2563eb;
+        color: #c2410c;
         line-height: 1.1;
         letter-spacing: -0.02em;
     }
 
     .status-text {
-        font-size: 0.925rem;
+        font-size: 0.9rem;
         font-weight: 500;
-        color: #475569;
+        color: #57534e;
         margin-top: 6px;
     }
 
     /* Subtle Dividers */
     hr {
-        border-color: #e2e8f0 !important;
+        border-color: #e7e5e4 !important;
         margin: 20px 0 !important;
     }
 
-    /* Native-feeling Buttons */
+    /* Native Research Lab Buttons */
     .stButton > button {
-        border-radius: 6px !important;
+        border-radius: 4px !important;
         font-weight: 500 !important;
         font-size: 0.875rem !important;
-        border: 1px solid #cbd5e1 !important;
-        color: #334155 !important;
+        border: 1px solid #d6d3d1 !important;
+        color: #292524 !important;
         background-color: #ffffff !important;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02) !important;
         transition: all 0.15s ease !important;
     }
 
     .stButton > button:hover {
-        border-color: #94a3b8 !important;
-        color: #0f172a !important;
-        background-color: #f8fafc !important;
+        border-color: #c2410c !important;
+        color: #c2410c !important;
+        background-color: #fff7ed !important;
     }
 
     /* Code Blocks & Terminal Boxes: High Contrast */
     pre, code, [data-testid="stCodeBlock"] {
         font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
-        background-color: #0f172a !important;
-        border: 1px solid #1e293b !important;
-        border-radius: 8px !important;
+        background-color: #1c1917 !important;
+        border: 1px solid #292524 !important;
+        border-radius: 6px !important;
     }
 
     pre *, code *, [data-testid="stCodeBlock"] * {
-        color: #f1f5f9 !important;
+        color: #f5f5f4 !important;
         font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
     }
 </style>
