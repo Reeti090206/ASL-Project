@@ -28,7 +28,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
     /* Global Typography */
-    html, body, [class*="css"], .stMarkdown, .stText, p, span, label, div {
+    html, body, [class*="css"], .stMarkdown, .stText, p, label {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
         -webkit-font-smoothing: antialiased;
         color: #1e293b;
@@ -173,10 +173,17 @@ st.markdown("""
         background-color: #f8fafc !important;
     }
 
-    /* Code & Monospace Elements */
-    code, pre {
+    /* Code Blocks & Terminal Boxes: High Contrast */
+    pre, code, [data-testid="stCodeBlock"] {
         font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
-        border-radius: 6px !important;
+        background-color: #0f172a !important;
+        border: 1px solid #1e293b !important;
+        border-radius: 8px !important;
+    }
+
+    pre *, code *, [data-testid="stCodeBlock"] * {
+        color: #f1f5f9 !important;
+        font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
     }
 </style>
 """, unsafe_allow_html=True)
