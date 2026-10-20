@@ -147,21 +147,7 @@ streamlit run app.py
 ```
 *Opens the web dashboard in your default browser at `http://localhost:8501`.*
 
----
 
-## 🧠 Theory & Viva Q&A Guide
-
-### Q1: Why use hand landmarks instead of feeding raw image pixels directly to ML models?
-**Answer:** Raw images have 120,000+ dimensions ($200 \times 200 \times 3$), containing background clutter, varying skin colors, and lighting variations. MediaPipe extracts 21 anatomical keypoints ($63$ coordinates: $x, y, z$). By subtracting the wrist coordinates, we achieve **translation invariance**; by dividing by the hand's spatial span, we achieve **scale invariance**. This allows classical ML models to learn the geometric gesture shape irrespective of hand position or distance to camera.
-
-### Q2: How is data leakage prevented?
-**Answer:** Data leakage occurs when test information influences preprocessing or model selection. Here:
-1. Train/test splitting ($80/20$) is performed **before** any scaling.
-2. `StandardScaler` is wrapped inside a `Pipeline` so that the mean and standard deviation are computed **strictly** on the training set.
-3. Cross-validation during hyperparameter tuning is conducted entirely within the training fold.
-4. The held-out test set is evaluated only once on the finalized estimators.
-
-### Q3: Why are macro-averaged metrics preferred over micro-averaging?
 **Answer:** Macro-averaging computes metrics independently for each class and averages them equally, treating rare and frequent alphabet classes with equal weight. This ensures the model does not achieve artificially high scores by performing well only on dominant classes.
 
 ### Q4: Which model performed best and why?
