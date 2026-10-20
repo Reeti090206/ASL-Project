@@ -22,58 +22,64 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom Styling: Restrained Computer Vision Research Lab Aesthetic
+# Custom Styling: Dark Computer Vision Workspace Aesthetic (Matching Reference Design)
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Lora:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-    /* Global Typography: Dark Charcoal */
+    /* Global Typography - Editorial Serif Primary */
     html, body, [class*="css"], .stMarkdown, .stText, p, label, li,
     [data-testid="stMarkdownContainer"] p,
     [data-testid="stSidebar"] p,
     [data-testid="stSidebar"] span,
     [data-testid="stSidebar"] label {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        font-family: 'Newsreader', 'Lora', Georgia, 'Times New Roman', serif !important;
         -webkit-font-smoothing: antialiased;
-        color: #252A27 !important;
+        color: #d1d5db !important;
+        font-size: 15px;
+        line-height: 1.65;
     }
 
-    /* Headings Across Entire App & Sidebar (Forced High Contrast Dark Charcoal) */
-    h1, h2, h3, h4, h5, h6,
-    [data-testid="stHeading"] *,
-    [data-testid="stMarkdownContainer"] h1,
-    [data-testid="stMarkdownContainer"] h2,
-    [data-testid="stMarkdownContainer"] h3,
-    [data-testid="stMarkdownContainer"] h4,
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3,
-    [data-testid="stSidebar"] h4,
-    [data-testid="stSidebar"] [data-testid="stHeadingWithActionElements"] *,
-    .stHeading h1, .stHeading h2, .stHeading h3 {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-        letter-spacing: -0.02em !important;
-        font-weight: 650 !important;
-        color: #252A27 !important;
+    /* Headings Hierarchy - Playfair Display Editorial Serif */
+    h1, [data-testid="stHeading"] h1, .stHeading h1 {
+        font-family: 'Playfair Display', 'Newsreader', Georgia, serif !important;
+        font-size: 30px !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.01em !important;
+        color: #f9fafb !important;
+        margin-top: 18px !important;
+        margin-bottom: 8px !important;
     }
 
-    /* Secondary / Muted Text & Captions */
-    .stCaption, [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p,
-    [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
-        color: #656860 !important;
-        font-size: 0.8125rem !important;
+    h2, h3, [data-testid="stHeading"] h2, [data-testid="stHeading"] h3,
+    .stHeading h2, .stHeading h3, [data-testid="stMarkdownContainer"] h2, [data-testid="stMarkdownContainer"] h3 {
+        font-family: 'Playfair Display', 'Newsreader', Georgia, serif !important;
+        font-size: 20px !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.01em !important;
+        color: #f9fafb !important;
+        margin-top: 18px !important;
+        margin-bottom: 8px !important;
     }
 
-    /* Warm Off-White Research Canvas */
+    h4, h5, h6 {
+        font-family: 'Playfair Display', 'Newsreader', Georgia, serif !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        color: #e5e7eb !important;
+    }
+
+    /* Deep Dark Charcoal Canvas */
     [data-testid="stAppViewContainer"], .stApp {
-        background-color: #FAF9F6 !important;
+        background-color: #111216 !important;
+        color: #f3f4f6 !important;
     }
 
-    /* Content block padding: Reduced oversized top whitespace */
+    /* Responsive, Compact Container */
     .block-container {
-        padding-top: 1.75rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 2.5rem !important;
-        max-width: 1050px !important;
+        max-width: 1150px !important;
     }
 
     /* Main Container */
@@ -81,124 +87,179 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* Top Header Bar */
+    /* Header Bar */
     [data-testid="stHeader"] {
         background-color: transparent !important;
     }
 
-    /* Grounded Research Sidebar */
+    /* Dark Workspace Sidebar */
     [data-testid="stSidebar"] {
-        background-color: #F4F3EE !important;
-        border-right: 1px solid #DCDDD6 !important;
+        background-color: #14161b !important;
+        border-right: 1px solid #242730 !important;
     }
 
     [data-testid="stSidebar"] > div:first-child {
-        background-color: #F4F3EE !important;
+        background-color: #14161b !important;
     }
 
-    /* Sidebar Title & Subheading Balance */
+    /* Sidebar Project Name: Playfair Display 700, 20px */
     [data-testid="stSidebar"] h1 {
-        font-size: 1.25rem !important;
+        font-family: 'Playfair Display', 'Newsreader', Georgia, serif !important;
+        font-size: 20px !important;
         font-weight: 700 !important;
-        color: #252A27 !important;
-        margin-top: 10px !important;
+        color: #f9fafb !important;
+        margin-top: 8px !important;
         margin-bottom: 2px !important;
     }
+
+    /* Sidebar Technical Section Labels: JetBrains Mono */
     [data-testid="stSidebar"] h3 {
-        font-size: 0.95rem !important;
-        font-weight: 650 !important;
-        color: #252A27 !important;
-        margin-top: 14px !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        color: #6b7280 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase !important;
+        margin-top: 16px !important;
         margin-bottom: 8px !important;
-        text-transform: none !important;
     }
 
-    /* Clean Subtle Sidebar Radio Navigation */
+    /* Sidebar Navigation Container */
     [data-testid="stSidebar"] [data-testid="stRadio"] > div {
-        gap: 2px !important;
+        gap: 3px !important;
     }
+
+    /* Sidebar Radio: Clean Styling, Transparent Text Containers, No Yellow/White Boxes */
     [data-testid="stSidebar"] [data-testid="stRadio"] label {
-        padding: 6px 10px !important;
-        border-radius: 4px !important;
-        font-size: 0.875rem !important;
-        color: #252A27 !important;
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        font-size: 15px !important;
+        font-weight: 450 !important;
+        color: #9ca3af !important;
+        padding: 7px 12px !important;
+        border-radius: 6px !important;
         cursor: pointer !important;
-        transition: background-color 0.15s ease !important;
+        transition: all 0.15s ease !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        margin-bottom: 2px !important;
     }
+
+    /* ALL child elements inside radio labels (text, markdown, divs) must be transparent */
+    [data-testid="stSidebar"] [data-testid="stRadio"] label *,
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:hover *,
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:focus *,
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:active *,
+    [data-testid="stSidebar"] [data-testid="stRadio"] [data-testid="stMarkdownContainer"],
+    [data-testid="stSidebar"] [data-testid="stRadio"] [data-testid="stMarkdownContainer"] *,
+    [data-testid="stSidebar"] [data-testid="stRadio"] div[data-baseweb="radio"] * {
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    /* Elegant Subtle Hover on Sidebar Label */
     [data-testid="stSidebar"] [data-testid="stRadio"] label:hover {
-        background-color: #ECEAE4 !important;
-    }
-    [data-testid="stSidebar"] [data-testid="stRadio"] input[type="radio"]:checked + div {
-        border-color: #A35D3C !important;
-        background-color: #A35D3C !important;
+        background-color: #1c2027 !important;
+        color: #ffffff !important;
     }
 
-    /* Compact System Status Text */
-    [data-testid="stSidebar"] .stMarkdown p {
-        font-size: 0.8125rem !important;
-        line-height: 1.5 !important;
-        color: #656860 !important;
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:hover p,
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:hover span {
+        color: #ffffff !important;
     }
 
-    /* Clean Research Lab Header Card */
+    /* Active (Checked) Selected State: Subtle Clean Dark Active Background */
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:has(input[type="radio"]:checked) {
+        background-color: #1a1e26 !important;
+        border: 1px solid #282d38 !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:has(input[type="radio"]:checked) p,
+    [data-testid="stSidebar"] [data-testid="stRadio"] label:has(input[type="radio"]:checked) span {
+        color: #f9fafb !important;
+        font-weight: 600 !important;
+    }
+
+    /* Radio Circle Accent in Pure Red */
+    [data-testid="stRadio"] input[type="radio"] {
+        accent-color: #ef4444 !important;
+    }
+
+    /* Technical Workspace Header Panel */
     .header-card {
-        background-color: #ffffff;
-        border: 1px solid #DCDDD6;
-        border-left: 3px solid #A35D3C;
-        border-radius: 4px;
-        padding: 16px 20px;
+        background-color: #181a20;
+        border: 1px solid #282b34;
+        border-radius: 6px;
+        padding: 18px 22px;
         margin-bottom: 20px;
-        box-shadow: none;
+        position: relative;
+    }
+
+    .header-card::before {
+        content: "WORKSPACE • REAL-TIME ASL RECOGNITION";
+        display: block;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        font-weight: 600;
+        color: #ef4444;
+        letter-spacing: 0.08em;
+        margin-bottom: 6px;
+        text-transform: uppercase;
     }
 
     .header-card h1 {
-        color: #252A27 !important;
-        font-size: 1.35rem !important;
-        font-weight: 650 !important;
-        letter-spacing: -0.02em !important;
+        font-family: 'Playfair Display', 'Newsreader', Georgia, serif !important;
+        color: #f9fafb !important;
+        font-size: 30px !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.01em !important;
         margin: 0 0 4px 0 !important;
     }
 
     .header-card p {
-        color: #656860 !important;
-        font-size: 0.875rem !important;
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        color: #9ca3af !important;
+        font-size: 15px !important;
         font-weight: 400 !important;
         margin: 0 !important;
     }
 
-    /* Compact Integrated Metric Blocks */
+    /* Metric Panels: Editorial Serif with Warm Red Highlights */
     .metric-card {
-        background-color: #ffffff;
-        border: 1px solid #DCDDD6;
-        border-radius: 4px;
-        padding: 12px 14px;
+        background-color: #181a20;
+        border: 1px solid #282b34;
+        border-radius: 6px;
+        padding: 14px 18px;
         box-shadow: none;
         text-align: left;
     }
 
     .metric-value {
-        font-size: 1.35rem;
-        font-weight: 650;
-        color: #252A27;
-        font-variant-numeric: tabular-nums;
-        line-height: 1.15;
+        font-family: 'Playfair Display', 'Newsreader', Georgia, serif !important;
+        font-size: 30px !important;
+        font-weight: 700 !important;
+        color: #ef4444 !important;
+        font-variant-numeric: tabular-nums !important;
+        line-height: 1.15 !important;
     }
 
     .metric-label {
-        font-size: 0.75rem;
-        color: #656860;
-        font-weight: 500;
-        text-transform: none;
-        letter-spacing: normal;
-        margin-top: 3px;
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        font-size: 12px !important;
+        color: #9ca3af !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.03em !important;
+        margin-top: 4px !important;
+        text-transform: uppercase !important;
     }
 
-    /* Clean Prediction Status Panel */
+    /* Prediction Panel: Clean Terminal Detection Box */
     .prediction-badge {
-        background-color: #ffffff;
-        border: 1px solid #DCDDD6;
-        border-radius: 4px;
-        padding: 16px;
+        background-color: #181a20;
+        border: 1px solid #282b34;
+        border-radius: 6px;
+        padding: 18px;
         text-align: center;
         margin-top: 10px;
         margin-bottom: 14px;
@@ -206,55 +267,171 @@ st.markdown("""
     }
 
     .predicted-letter {
-        font-size: 3.25rem;
+        font-family: 'Playfair Display', 'Newsreader', Georgia, serif !important;
+        font-size: 3.5rem;
         font-weight: 700;
-        color: #A35D3C;
+        color: #ef4444;
         line-height: 1.1;
         letter-spacing: -0.02em;
     }
 
     .status-text {
-        font-size: 0.875rem;
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        font-size: 14px;
         font-weight: 500;
-        color: #252A27;
-        margin-top: 4px;
+        color: #9ca3af;
+        margin-top: 6px;
     }
 
-    /* Subtle Dividers */
+    /* Technical Section Headers with Monospace Accents */
+    .tech-label {
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        color: #ef4444 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase !important;
+    }
+
+    /* Streamlit Native Metric Cards */
+    [data-testid="stMetric"] {
+        background-color: #181a20 !important;
+        border: 1px solid #282b34 !important;
+        border-radius: 6px !important;
+        padding: 14px 18px !important;
+        box-shadow: none !important;
+    }
+
+    [data-testid="stMetricValue"], [data-testid="stMetricValue"] * {
+        font-family: 'Playfair Display', 'Newsreader', Georgia, serif !important;
+        font-size: 30px !important;
+        font-weight: 700 !important;
+        color: #ef4444 !important;
+        line-height: 1.15 !important;
+        font-variant-numeric: tabular-nums !important;
+    }
+
+    [data-testid="stMetricLabel"], [data-testid="stMetricLabel"] * {
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        color: #9ca3af !important;
+        letter-spacing: 0.03em !important;
+        text-transform: uppercase !important;
+    }
+
+    /* Tables & Dataframes */
+    [data-testid="stDataFrame"], .stDataFrame {
+        border: 1px solid #282b34 !important;
+        border-radius: 6px !important;
+        background-color: #181a20 !important;
+    }
+
+    table {
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        font-size: 14px !important;
+        border-collapse: collapse !important;
+        color: #f3f4f6 !important;
+    }
+
+    th {
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        color: #9ca3af !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.03em !important;
+        background-color: #14161b !important;
+        border-bottom: 1px solid #282b34 !important;
+        padding: 8px 12px !important;
+    }
+
+    td {
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        color: #f3f4f6 !important;
+        border-bottom: 1px solid #20222a !important;
+        padding: 8px 12px !important;
+    }
+
+    /* Alerts and Notices */
+    [data-testid="stAlert"] {
+        background-color: #181a20 !important;
+        border: 1px solid #282b34 !important;
+        border-radius: 6px !important;
+        color: #f3f4f6 !important;
+    }
+
+    [data-testid="stAlert"] p, [data-testid="stAlert"] span {
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        font-size: 15px !important;
+        color: #f3f4f6 !important;
+    }
+
+    /* Subtle Dark Dividers */
     hr {
-        border-color: #DCDDD6 !important;
-        margin: 18px 0 !important;
+        border-color: #242730 !important;
+        margin: 20px 0 !important;
     }
 
-    /* Native Research Lab Buttons */
+    /* Clean Workspace Buttons */
     .stButton > button {
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
         border-radius: 4px !important;
         font-weight: 500 !important;
-        font-size: 0.875rem !important;
-        border: 1px solid #DCDDD6 !important;
-        color: #252A27 !important;
-        background-color: #ffffff !important;
+        font-size: 15px !important;
+        border: 1px solid #2d313a !important;
+        color: #f3f4f6 !important;
+        background-color: #1c1e24 !important;
         box-shadow: none !important;
-        transition: border-color 0.15s ease, color 0.15s ease !important;
+        transition: all 0.15s ease !important;
     }
 
     .stButton > button:hover {
-        border-color: #A35D3C !important;
-        color: #A35D3C !important;
-        background-color: #FAF9F6 !important;
+        border-color: #ef4444 !important;
+        color: #ef4444 !important;
+        background-color: #22181a !important;
     }
 
-    /* Code Blocks & Terminal: High Contrast */
-    pre, code, [data-testid="stCodeBlock"] {
-        font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
-        background-color: #1F2321 !important;
-        border: 1px solid #2F3532 !important;
+    /* Selectboxes and Inputs */
+    .stSelectbox label, .stRadio label {
+        font-family: 'Newsreader', 'Lora', Georgia, serif !important;
+        color: #e5e7eb !important;
+        font-size: 15px !important;
+        font-weight: 500 !important;
+    }
+
+    [data-baseweb="select"] > div {
+        background-color: #181a20 !important;
+        border-color: #282b34 !important;
+        color: #f3f4f6 !important;
         border-radius: 4px !important;
     }
 
-    pre *, code *, [data-testid="stCodeBlock"] * {
-        color: #FAF9F6 !important;
-        font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace !important;
+    /* High Contrast Monospace Code Blocks */
+    pre, [data-testid="stCodeBlock"] {
+        font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+        background-color: #0c0d10 !important;
+        border: 1px solid #242730 !important;
+        border-radius: 4px !important;
+        font-size: 13px !important;
+    }
+
+    pre *, [data-testid="stCodeBlock"] * {
+        color: #f3f4f6 !important;
+        font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    }
+
+    /* Inline Code Spans: JetBrains Mono with Subtle Highlight */
+    code:not(pre code) {
+        font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+        font-size: 12px !important;
+        color: #f87171 !important;
+        background-color: #1f1416 !important;
+        border: 1px solid #3d2024 !important;
+        padding: 2px 6px !important;
+        border-radius: 4px !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -497,8 +674,8 @@ elif nav_choice == "📷 Live Recognition":
                             """, unsafe_allow_html=True)
                         else:
                             status_placeholder.markdown("""
-                            <div class="prediction-badge" style="border-color: #cbd5e1; background-color: #f8fafc;">
-                                <div class="status-text" style="color: #94a3b8;">✋ No hand detected in frame</div>
+                            <div class="prediction-badge" style="border-color: #282b34; background-color: #181a20;">
+                                <div class="status-text" style="color: #6b7280;">✋ No hand detected in frame</div>
                             </div>
                             """, unsafe_allow_html=True)
 
